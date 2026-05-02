@@ -11,8 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- Razorpay SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Stripe SDK -->
+    <script src="https://js.stripe.com/v3/"></script>
 
     <style>
         :root {
@@ -362,13 +362,13 @@
 
 <script>
     const courses = [
-        { id: "sig1", title: "Voice Mastery (1-Day Intensive)", category: "signature", duration: "1 Day", price: "₹25,000", amount: 2500000, desc: "Immediate authority and presence training.", img: "../images/course_voice.png" },
-        { id: "sig3", title: "Campus-to-Corporate Bootcamp", category: "signature", duration: "5 Days", price: "₹15,000", amount: 1500000, desc: "Accelerated industry readiness training.", img: "../images/course_campus.png" },
-        { id: "c1", title: "Executive Leadership Mastery", category: "leadership", duration: "8 Weeks", price: "₹14,999", amount: 1499900, desc: "Transform from a manager to a visionary leader with advanced behavioral ownership frameworks.", img: "../images/course_leadership.png" },
-        { id: "c2", title: "Public Speaking for Strategists", category: "communication", duration: "4 Weeks", price: "₹8,499", amount: 849900, desc: "Command the room and deliver high-impact presentations that drive organizational change.", img: "../images/course_comm.png" },
-        { id: "c3", title: "Emotional Intelligence Architect", category: "mindset", duration: "6 Weeks", price: "₹11,999", amount: 1199900, desc: "Master the psychology of leadership and build high-performance cultural systems.", img: "../images/course_eq.png" },
-        { id: "c4", title: "Strategic Decision Making", category: "leadership", duration: "4 Weeks", price: "₹9,999", amount: 999900, desc: "Learn to navigate complex organizational dynamics with data-backed leadership diagnostics.", img: "../images/course_leadership.png" },
-        { id: "c5", title: "AI-Enabled Learning Design", category: "mindset", duration: "5 Weeks", price: "₹12,499", amount: 1249900, desc: "Leverage AI to create personalized development journeys in the corporate environment.", img: "../images/course_ai.png" }
+        { id: "sig1", title: "Voice Mastery (1-Day Intensive)", category: "signature", duration: "1 Day", price: "₹25,000", amount: 2500000, desc: "Immediate authority and presence training.", img: "../images/course_voice.png", stripe_url: "https://buy.stripe.com/test_sig1" },
+        { id: "sig3", title: "Campus-to-Corporate Bootcamp", category: "signature", duration: "5 Days", price: "₹15,000", amount: 1500000, desc: "Accelerated industry readiness training.", img: "../images/course_campus.png", stripe_url: "https://buy.stripe.com/test_sig3" },
+        { id: "c1", title: "Executive Leadership Mastery", category: "leadership", duration: "8 Weeks", price: "₹14,999", amount: 1499900, desc: "Transform from a manager to a visionary leader with advanced behavioral ownership frameworks.", img: "../images/course_leadership.png", stripe_url: "https://buy.stripe.com/test_c1" },
+        { id: "c2", title: "Public Speaking for Strategists", category: "communication", duration: "4 Weeks", price: "₹8,499", amount: 849900, desc: "Command the room and deliver high-impact presentations that drive organizational change.", img: "../images/course_comm.png", stripe_url: "https://buy.stripe.com/test_c2" },
+        { id: "c3", title: "Emotional Intelligence Architect", category: "mindset", duration: "6 Weeks", price: "₹11,999", amount: 1199900, desc: "Master the psychology of leadership and build high-performance cultural systems.", img: "../images/course_eq.png", stripe_url: "https://buy.stripe.com/test_c3" },
+        { id: "c4", title: "Strategic Decision Making", category: "leadership", duration: "4 Weeks", price: "₹9,999", amount: 999900, desc: "Learn to navigate complex organizational dynamics with data-backed leadership diagnostics.", img: "../images/course_leadership.png", stripe_url: "https://buy.stripe.com/test_c4" },
+        { id: "c5", title: "AI-Enabled Learning Design", category: "mindset", duration: "5 Weeks", price: "₹12,499", amount: 1249900, desc: "Leverage AI to create personalized development journeys in the corporate environment.", img: "../images/course_ai.png", stripe_url: "https://buy.stripe.com/test_c5" }
     ];
 
     function renderCourses(filter = "all") {
@@ -418,48 +418,21 @@
         drw.classList.remove('op');
     }));
 
-    // RAZORPAY INTEGRATION
+    // STRIPE PAYMENT INTEGRATION
     function payNow(courseId) {
-        console.log("Initiating payment for course:", courseId);
+        console.log("Initiating payment for course via Stripe:", courseId);
         const course = courses.find(c => c.id === courseId);
         if (!course) {
             console.error("Course not found:", courseId);
             return;
         }
 
-        if (typeof Razorpay === 'undefined') {
-            alert("Razorpay SDK failed to load. Please check your internet connection.");
-            return;
+        if (course.stripe_url) {
+            // Securely open the Stripe Checkout Payment Link
+            window.open(course.stripe_url, '_blank');
+        } else {
+            alert("Stripe Checkout Link is not configured for this course yet.");
         }
-
-        const options = {
-            "key": "rzp_test_YOUR_ID", 
-            "amount": parseInt(course.amount),
-            "currency": "INR",
-            "name": "Dr. Krishnan Chandrasekharan",
-            "description": course.title,
-            "image": "https://raw.githubusercontent.com/antigravity-ai/assets/main/drkc/profile1.jpeg",
-            "notes": {
-                "course_name": course.title,
-                "course_id": course.id
-            },
-            "handler": function (response) {
-                alert("Payment Successful! Transaction ID: " + response.razorpay_payment_id);
-            },
-            "modal": {
-                "ondismiss": function() {
-                    console.log("Checkout form closed");
-                }
-            },
-            "prefill": {
-                "name": "",
-                "email": "",
-                "contact": ""
-            },
-            "theme": { "color": "#1e40af" }
-        };
-        const rzp = new Razorpay(options);
-        rzp.open();
     }
 
     renderCourses();
