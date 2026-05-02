@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Specialized Courses | Dr. Krishnan Chandrasekharan</title>
+    <meta name="description" content="Explore specialized leadership and capability-building courses designed by Dr. Krishnan Chandrasekharan.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+        :root {
+            --blue-900: #0a1628; --blue-800: #102040; --blue-700: #1a3560; --blue-600: #1e4080;
+            --blue-500: #1d4ed8; --blue-400: #3b82f6; --blue-300: #93c5fd; --blue-200: #bfdbfe;
+            --blue-100: #dbeafe; --blue-50:  #eff6ff;
+            --white:    #ffffff; --grey-50:  #f8fafc; --grey-100: #f1f5f9; --grey-200: #e2e8f0; --grey-500: #64748b; --grey-700: #334155;
+            --ink:      #0f172a;
+            --radius-md: 16px; --radius-lg: 24px; --radius-xl: 36px; --radius-full: 9999px;
+            --shadow-sm:  0 2px 12px rgba(15,23,42,0.08);
+            --shadow-md:  0 8px 32px rgba(15,23,42,0.10);
+            --shadow-lg:  0 20px 60px rgba(15,23,42,0.13);
+            --font-display: 'Playfair Display', serif; --font-body: 'Plus Jakarta Sans', sans-serif;
+            --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94); --tr: all 0.38s var(--ease);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: var(--white); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+        .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 72px); }
+        .sec { padding: clamp(80px, 10vw, 136px) 0; }
+        .btn { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; text-decoration: none; border: none; border-radius: var(--radius-full); padding: 15px 32px; transition: var(--tr); cursor: pointer; }
+        .btn-blue { background: var(--blue-500); color: var(--white); box-shadow: 0 12px 40px rgba(29,78,216,0.22); }
+        .btn-blue:hover { background: var(--blue-700); transform: translateY(-2px); }
+
+        /* NAV */
+        #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; transition: var(--tr); width: 100%; }
+        .nb { display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px,5vw,72px); height: 72px; background: rgba(255,255,255,0.92); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid rgba(29,78,216,0.07); transition: var(--tr); }
+        #nav.sc .nb { height: 64px; box-shadow: var(--shadow-md); border-bottom-color: var(--grey-200); }
+        .nbrand { font-family: var(--font-display); font-size: clamp(13px,1.5vw,16px); font-weight: 700; color: var(--blue-900); text-decoration: none; line-height: 1.2; }
+        .nbrand em { font-style: italic; color: var(--blue-500); font-weight: 400; }
+        .nav-pic { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--blue-200); margin-right: 12px; display: block; flex-shrink: 0; }
+        .nbrand-wrap { display: flex; align-items: center; gap: 0; }
+        .nlinks { display: flex; align-items: center; gap: clamp(16px,2.5vw,36px); list-style: none; }
+        .nlinks a { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey-500); text-decoration: none; transition: color 0.25s; position: relative; }
+        .nlinks a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2px; background: var(--blue-500); border-radius: 2px; transform: scaleX(0); transition: transform 0.3s var(--ease); }
+        .nlinks a:hover, .nlinks a.act { color: var(--blue-600); }
+        .nlinks a:hover::after, .nlinks a.act::after { transform: scaleX(1); }
+        .ncta { font-size: 12px; font-weight: 700; padding: 10px 22px; border-radius: var(--radius-full); background: var(--blue-500); color: var(--white) !important; text-decoration: none; transition: var(--tr); }
+        .ncta:hover { background: var(--blue-700); transform: translateY(-1px); }
+        .ham { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+        .ham span { display: block; width: 22px; height: 2px; background: var(--blue-800); border-radius: 2px; transition: var(--tr); }
+        .ham.op span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .ham.op span:nth-child(2) { opacity: 0; width: 0; }
+        .ham.op span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+        .drw { display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 999; background: rgba(255,255,255,0.98); backdrop-filter: blur(24px); border-bottom: 1px solid var(--grey-200); flex-direction: column; box-shadow: var(--shadow-lg); transform: translateY(-8px); opacity: 0; transition: var(--tr); pointer-events: none; }
+        .drw.op { display: flex; transform: translateY(0); opacity: 1; pointer-events: all; }
+        .drw a { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey-700); text-decoration: none; padding: 18px clamp(20px,5vw,72px); border-bottom: 1px solid var(--grey-100); transition: all 0.2s; }
+        .drw a:hover { color: var(--blue-600); background: var(--blue-50); }
+        .drw .mcta { background: var(--blue-500); color: var(--white) !important; text-align: center; margin: 16px clamp(20px,5vw,72px) 24px; border-radius: var(--radius-full); border-bottom: none !important; }
+        .drw .mcta:hover { background: var(--blue-700); }
+        @media(max-width:860px) { .nlinks, .ncta-w { display: none; } .ham { display: flex; } }
+
+        /* SIGNATURE PROGRAMS OVERHAUL */
+        .sig-program { background: var(--white); border-radius: var(--radius-xl); border: 1px solid var(--grey-100); margin-bottom: 80px; box-shadow: var(--shadow-lg); overflow: hidden; display: grid; grid-template-columns: 420px 1fr; position: relative; }
+        @media(max-width:1100px) { .sig-program { grid-template-columns: 1fr; } }
+        
+        .sig-img { position: relative; overflow: hidden; height: 100%; min-height: 400px; }
+        .sig-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
+        .sig-program:hover .sig-img img { transform: scale(1.05); }
+        .sig-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent, rgba(10,22,40,0.1)); }
+
+        .sig-content { padding: clamp(32px, 5vw, 64px); }
+        .sig-eyebrow { font-size: 10px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue-500); margin-bottom: 16px; display: block; }
+        .sig-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; color: var(--blue-900); margin-bottom: 12px; line-height: 1.1; }
+        .sig-tagline { font-family: var(--font-display); font-size: 1.25rem; font-style: italic; color: var(--blue-600); margin-bottom: 28px; display: block; opacity: 0.85; }
+        .sig-intro { font-size: 15px; line-height: 1.8; color: var(--grey-500); margin-bottom: 40px; }
+        
+        .sig-feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+        @media(max-width:640px) { .sig-feature-grid { grid-template-columns: 1fr; gap: 24px; } }
+        
+        .sig-col h4 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 20px; color: var(--blue-800); border-bottom: 2px solid var(--blue-50); padding-bottom: 8px; }
+        .sig-list li { margin-bottom: 12px; font-size: 14px; color: var(--grey-700); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+        .sig-list li i { color: var(--blue-500); margin-top: 3px; font-size: 13px; }
+
+        .case-study { background: var(--grey-50); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 48px; border: 1px solid var(--grey-100); }
+        .case-study h5 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--blue-700); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 10px; }
+        .case-stats { display: flex; gap: 32px; margin-top: 24px; flex-wrap: wrap; }
+        .stat-item b { display: block; font-size: 1.4rem; color: var(--blue-600); font-family: var(--font-display); margin-bottom: 2px; }
+        .stat-item span { font-size: 11px; color: var(--grey-500); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        .sig-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 32px; border-top: 1px solid var(--grey-100); padding-top: 32px; }
+        .sig-meta-item small { display: block; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--grey-500); margin-bottom: 4px; }
+        .sig-meta-item p { font-size: 13px; font-weight: 700; color: var(--blue-900); }
+
+        /* SPECIALIZED CARDS ENHANCEMENT */
+        .filter-bar { display: flex; gap: 12px; justify-content: center; margin-bottom: 48px; flex-wrap: wrap; }
+        .filter-btn { background: var(--grey-100); color: var(--grey-500); padding: 10px 24px; border-radius: var(--radius-full); border: none; cursor: pointer; font-weight: 600; font-size: 13px; transition: var(--tr); }
+        .filter-btn.act { background: var(--blue-500); color: var(--white); box-shadow: var(--shadow-blue); }
+
+        .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 3.5vw, 36px); }
+        @media(max-width:1024px) { .course-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(max-width:640px) { .course-grid { grid-template-columns: 1fr; } }
+
+        .course-card { background: var(--white); border: 1px solid var(--grey-200); border-radius: var(--radius-lg); overflow: hidden; transition: var(--tr); display: flex; flex-direction: column; }
+        .course-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); }
+        .c-img { width: 100%; height: 240px; background: var(--blue-50); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .c-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
+        .course-card:hover .c-img img { transform: scale(1.06); }
+        .c-body { padding: 32px; flex-grow: 1; display: flex; flex-direction: column; }
+        .c-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--blue-500); letter-spacing: 0.1em; margin-bottom: 12px; }
+        .c-body h3 { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 14px; color: var(--ink); }
+        .c-body p { font-size: 14px; line-height: 1.62; color: var(--grey-500); margin-bottom: 24px; flex-grow: 1; }
+        
+        .c-meta { display: flex; justify-content: space-between; align-items: center; padding: 18px 32px 20px; border-top: 1px solid var(--grey-100); background: var(--grey-50); margin-top: auto; }
+        .c-dur { font-size: 12px; font-weight: 600; color: var(--grey-700); display: inline-flex; align-items: center; gap: 6px; }
+        .c-price { font-size: 1.3rem; font-weight: 700; color: var(--blue-600); }
+
+        /* REVEAL */
+        .rev { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+        .rev.in { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<nav id="nav">
+    <div class="nb">
+        <div class="nbrand-wrap">
+            <img src="../images/profile1.jpeg" class="nav-pic" alt="Dr. Krishnan">
+            <a href="../index.html" class="nbrand">Dr. Krishnan <em>Chandrasekharan</em></a>
+        </div>
+        <ul class="nlinks">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="courses.html" class="act">Courses</a></li>
+            <li><a href="gallery.html">Visuals</a></li>
+            <li><a href="videos.html">Showreel</a></li>
+            <li><a href="blog.html">Blog</a></li>
+        </ul>
+        <div class="ncta-w">
+            <a href="contact.html" class="ncta">Contact</a>
+        </div>
+        <button class="ham" id="ham" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="drw" id="drw">
+    <a href="../index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="courses.html">Courses</a>
+    <a href="gallery.html">Visuals</a>
+    <a href="videos.html">Showreel</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html" class="mcta">Contact</a>
+</div>
+
+<header class="page-hero">
+    <div class="wrap">
+        <h1 class="rev">Specialized <em>Courses.</em></h1>
+        <p class="rev" style="opacity:0.7;">Elevate your leadership journey with outcome-driven learning programs.</p>
+    </div>
+</header>
+
+<section class="sec" style="background: var(--grey-50); border-bottom: 1px solid var(--grey-100);">
+    <div class="wrap">
+        <div class="rev" style="text-align:center; margin-bottom:80px;">
+            <div class="eyebrow ctr">Flagship Offerings</div>
+            <div class="rule ctr"></div>
+            <h2 class="hd">Signature <em>Programs.</em></h2>
+            <p style="color:var(--grey-500); margin-top:16px; font-size:18px;">Not Training. Transformation That Shows Up in Business Results.</p>
+        </div>
+
+        <!-- PROGRAM 1 -->
+        <div class="sig-program rev">
+            <div class="sig-img">
+                <img src="../images/course_voice.png" alt="Voice & Presence">
+            </div>
+            <div class="sig-content">
+                <span class="sig-eyebrow">Signature Program 01</span>
+                <h2 class="sig-title">Voice & Executive Presence Mastery™</h2>
+                <span class="sig-tagline">Own the Room Before You Say a Word</span>
+                <p class="sig-intro">Your voice is not just sound. It is authority, credibility, and leadership in action. Most professionals are heard. Very few are felt, remembered, and followed.</p>
+                
+                <div class="sig-feature-grid">
+                    <div class="sig-col">
+                        <h4>What This Program Solves</h4>
+                        <ul class="sig-list">
+                            <li><i class="fas fa-times-circle"></i> Hesitation in high-stakes conversations</li>
+                            <li><i class="fas fa-times-circle"></i> Weak voice projection or monotone delivery</li>
+                            <li><i class="fas fa-times-circle"></i> Lack of presence in meetings & talks</li>
+                        </ul>
+                    </div>
+                    <div class="sig-col">
+                        <h4>What You Will Master</h4>
+                        <ul class="sig-list">
+                            <li><i class="fas fa-check-circle"></i> Voice modulation & tonal control</li>
+                            <li><i class="fas fa-check-circle"></i> Executive presence & body language</li>
+                            <li><i class="fas fa-check-circle"></i> High-impact storytelling frameworks</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h5><i class="fas fa-chart-line"></i> Performance Impact</h5>
+                    <div class="case-stats">
+                        <div class="stat-item"><b>60%</b><span>Feedback Score</span></div>
+                        <div class="stat-item"><b>Leadership</b><span>Review invites</span></div>
+                        <div class="stat-item"><b>₹2 Cr</b><span>Proposal Win</span></div>
+                    </div>
+                </div>
+
+                <div class="sig-footer">
+                    <div class="sig-meta-item"><small>Investment</small><p>₹25K – ₹1.2L</p></div>
+                    <div class="sig-meta-item"><small>Target</small><p>Leaders & Founders</p></div>
+                    <div style="margin-left:auto; display:flex; gap:12px;">
+                        <a href="contact.html" class="btn btn-outline" style="border:1.5px solid var(--blue-100); color:var(--blue-600); padding: 12px 24px;">Discovery Call</a>
+                        <button class="btn btn-blue" onclick="payNow('sig1')" style="padding: 12px 28px;">Enroll Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROGRAM 2 -->
+        <div class="sig-program rev">
+            <div class="sig-img">
+                <img src="../images/course_comm.png" alt="Corporate Communication">
+            </div>
+            <div class="sig-content">
+                <span class="sig-eyebrow">Signature Program 02</span>
+                <h2 class="sig-title">Corporate Communication Excellence™</h2>
+                <span class="sig-tagline">Clarity That Drives Results</span>
+                <p class="sig-intro">In business, communication is not about speaking more. It’s about being understood instantly—and acted upon. Eliminate the gap between what you say and what people execute.</p>
+                
+                <div class="sig-feature-grid">
+                    <div class="sig-col">
+                        <h4>What This Program Solves</h4>
+                        <ul class="sig-list">
+                            <li><i class="fas fa-times-circle"></i> Misalignment across internal teams</li>
+                            <li><i class="fas fa-times-circle"></i> Ineffective emails and messaging</li>
+                            <li><i class="fas fa-times-circle"></i> Delayed organizational decisions</li>
+                        </ul>
+                    </div>
+                    <div class="sig-col">
+                        <h4>What You Will Master</h4>
+                        <ul class="sig-list">
+                            <li><i class="fas fa-check-circle"></i> Structured communication frameworks</li>
+                            <li><i class="fas fa-check-circle"></i> Business listening intelligence</li>
+                            <li><i class="fas fa-check-circle"></i> Cross-functional mastery</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h5><i class="fas fa-chart-line"></i> Performance Impact</h5>
+                    <div class="case-stats">
+                        <div class="stat-item"><b>35%</b><span>Faster Cycles</span></div>
+                        <div class="stat-item"><b>28%</b><span>Escalation Drop</span></div>
+                        <div class="stat-item"><b>Impact</b><span>Global Credibility</span></div>
+                    </div>
+                </div>
+
+                <div class="sig-footer">
+                    <div class="sig-meta-item"><small>Investment</small><p>₹1.5L – ₹8L</p></div>
+                    <div class="sig-meta-item"><small>Target</small><p>Corporate Teams</p></div>
+                    <div style="margin-left:auto; display:flex; gap:12px;">
+                        <a href="contact.html" class="btn btn-outline" style="border:1.5px solid var(--blue-100); color:var(--blue-600); padding: 12px 24px;">Proposal Query</a>
+                        <a href="contact.html" class="btn btn-blue" style="padding: 12px 28px;">Initiate Program</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROGRAM 3 -->
+        <div class="sig-program rev">
+            <div class="sig-img">
+                <img src="../images/course_campus.png" alt="Campus to Corporate">
+            </div>
+            <div class="sig-content">
+                <span class="sig-eyebrow">Signature Program 03</span>
+                <h2 class="sig-title">Campus to Corporate Transformation™</h2>
+                <span class="sig-tagline">From Degree to Deliverability</span>
+                <p class="sig-intro">Degrees don’t get jobs. Performance does. This program converts students into industry-ready professionals by bridging the gap between theoretical knowledge and workplace behavior.</p>
+                
+                <div class="sig-feature-grid">
+                    <div class="sig-col">
+                        <h4>What This Program Solves</h4>
+                        <ul class="sig-list">
+                            <li><i class="fas fa-times-circle"></i> Low interview success & confidence</li>
+                            <li><i class="fas fa-times-circle"></i> Industry-readiness & behavior gap</li>
+                            <li><i class="fas fa-times-circle"></i> Poor workplace adaptability skills</li>
+                        </ul>
+                    </div>
+                    <div class="sig-col">
+                        <h4>What You Will Master</h4>
+                        <ul class="sig-list">
+                            <li><i class="fas fa-check-circle"></i> Interview mastery (HR + Tech)</li>
+                            <li><i class="fas fa-check-circle"></i> Workplace etiquette & behavior</li>
+                            <li><i class="fas fa-check-circle"></i> Real-world simulation training</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="case-study">
+                    <h5><i class="fas fa-chart-line"></i> Career Impact</h5>
+                    <div class="case-stats">
+                        <div class="stat-item"><b>81%</b><span>Placement Rate</span></div>
+                        <div class="stat-item"><b>22%</b><span>Salary Hike</span></div>
+                        <div class="stat-item"><b>Day-1</b><span>Job Readiness</span></div>
+                    </div>
+                </div>
+
+                <div class="sig-footer">
+                    <div class="sig-meta-item"><small>Ideal For</small><p>Colleges & Students</p></div>
+                    <div class="sig-meta-item"><small>Outcomes</small><p>Higher Employability</p></div>
+                    <div style="margin-left:auto; display:flex; gap:12px;">
+                        <a href="contact.html" class="btn btn-outline" style="border:1.5px solid var(--blue-100); color:var(--blue-600); padding: 12px 24px;">Proposal</a>
+                        <button class="btn btn-blue" onclick="payNow('sig3')" style="padding: 12px 28px;">Enroll Bootcamp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="sec" style="padding-top: clamp(40px, 5vw, 64px);">
+    <div class="wrap">
+        <div class="rev" style="text-align:center; margin-bottom:52px;">
+            <div class="eyebrow ctr">Outcome Driven</div>
+            <h2 class="hd">Specialized <em>Learning.</em></h2>
+        </div>
+        <div class="filter-bar rev">
+            <button class="filter-btn act" data-cat="all">All Courses</button>
+            <button class="filter-btn" data-cat="leadership">Leadership</button>
+            <button class="filter-btn" data-cat="communication">Communication</button>
+            <button class="filter-btn" data-cat="mindset">Mindset</button>
+        </div>
+
+        <div class="course-grid" id="course-grid">
+            <!-- Dynamic Injection -->
+        </div>
+    </div>
+</section>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="wrap" style="padding: 64px 0 100px; text-align:center;">
+    <div class="rev">
+        <div class="rule ctr" style="margin-bottom:40px; opacity:0.08;"></div>
+        <a href="../index.html" style="color:var(--blue-500); text-decoration:none; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; display:inline-flex; align-items:center; gap:10px; padding: 14px 36px; border: 1.5px solid var(--blue-100); border-radius: 99px; transition: var(--tr); background: transparent;" onmouseover="this.style.background='var(--blue-50)'; this.style.borderColor='var(--blue-200)'" onmouseout="this.style.background='transparent'; this.style.borderColor='var(--blue-100)'">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio Home
+        </a>
+    </div>
+</div>
+
+<script>
+    const courses = [
+        { id: "sig1", title: "Voice Mastery (1-Day Intensive)", category: "signature", duration: "1 Day", price: "₹25,000", amount: 2500000, desc: "Immediate authority and presence training.", img: "../images/course_voice.png" },
+        { id: "sig3", title: "Campus-to-Corporate Bootcamp", category: "signature", duration: "5 Days", price: "₹15,000", amount: 1500000, desc: "Accelerated industry readiness training.", img: "../images/course_campus.png" },
+        { id: "c1", title: "Executive Leadership Mastery", category: "leadership", duration: "8 Weeks", price: "₹14,999", amount: 1499900, desc: "Transform from a manager to a visionary leader with advanced behavioral ownership frameworks.", img: "../images/course_leadership.png" },
+        { id: "c2", title: "Public Speaking for Strategists", category: "communication", duration: "4 Weeks", price: "₹8,499", amount: 849900, desc: "Command the room and deliver high-impact presentations that drive organizational change.", img: "../images/course_comm.png" },
+        { id: "c3", title: "Emotional Intelligence Architect", category: "mindset", duration: "6 Weeks", price: "₹11,999", amount: 1199900, desc: "Master the psychology of leadership and build high-performance cultural systems.", img: "../images/course_eq.png" },
+        { id: "c4", title: "Strategic Decision Making", category: "leadership", duration: "4 Weeks", price: "₹9,999", amount: 999900, desc: "Learn to navigate complex organizational dynamics with data-backed leadership diagnostics.", img: "../images/course_leadership.png" },
+        { id: "c5", title: "AI-Enabled Learning Design", category: "mindset", duration: "5 Weeks", price: "₹12,499", amount: 1249900, desc: "Leverage AI to create personalized development journeys in the corporate environment.", img: "../images/course_ai.png" }
+    ];
+
+    function renderCourses(filter = "all") {
+        const grid = document.getElementById('course-grid');
+        grid.innerHTML = courses
+            .filter(c => filter === "all" || c.category === filter)
+            .map(c => `
+                <div class="course-card rev in" data-cat="${c.category}">
+                    <div class="c-img">
+                        <img src="${c.img}" alt="${c.title}">
+                    </div>
+                    <div class="c-body">
+                        <span class="c-cat">${c.category}</span>
+                        <h3>${c.title}</h3>
+                        <p>${c.desc}</p>
+                        <button class="btn btn-blue" onclick="payNow('${c.id}')" style="width:100%; justify-content:center;">Enroll Now <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="c-meta">
+                        <span class="c-dur"><i class="far fa-clock"></i> ${c.duration}</span>
+                        <span class="c-price">${c.price}</span>
+                    </div>
+                </div>
+            `).join('');
+    }
+
+    // Filter Logic
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('act'));
+            btn.classList.add('act');
+            renderCourses(btn.dataset.cat);
+        });
+    });
+
+    // NAV SCROLL
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('sc', scrollY > 48));
+
+    // Mobile Drawer
+    const ham = document.getElementById('ham'), drw = document.getElementById('drw');
+    ham.addEventListener('click', () => {
+        ham.classList.toggle('op');
+        drw.classList.toggle('op');
+    });
+    drw.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        ham.classList.remove('op');
+        drw.classList.remove('op');
+    }));
+
+    // RAZORPAY INTEGRATION
+    function payNow(courseId) {
+        console.log("Initiating payment for course:", courseId);
+        const course = courses.find(c => c.id === courseId);
+        if (!course) {
+            console.error("Course not found:", courseId);
+            return;
+        }
+
+        if (typeof Razorpay === 'undefined') {
+            alert("Razorpay SDK failed to load. Please check your internet connection.");
+            return;
+        }
+
+        const options = {
+            "key": "rzp_test_YOUR_ID", 
+            "amount": parseInt(course.amount),
+            "currency": "INR",
+            "name": "Dr. Krishnan Chandrasekharan",
+            "description": course.title,
+            "image": "https://raw.githubusercontent.com/antigravity-ai/assets/main/drkc/profile1.jpeg",
+            "notes": {
+                "course_name": course.title,
+                "course_id": course.id
+            },
+            "handler": function (response) {
+                alert("Payment Successful! Transaction ID: " + response.razorpay_payment_id);
+            },
+            "modal": {
+                "ondismiss": function() {
+                    console.log("Checkout form closed");
+                }
+            },
+            "prefill": {
+                "name": "",
+                "email": "",
+                "contact": ""
+            },
+            "theme": { "color": "#1e40af" }
+        };
+        const rzp = new Razorpay(options);
+        rzp.open();
+    }
+
+    renderCourses();
+
+    // Reveal Logic
+    const ro = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){e.target.classList.add('in');} }), {threshold:0.1});
+    document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+</script>
+</body>
+</html>

@@ -250,6 +250,25 @@
         .wa { position: fixed; bottom: 28px; right: 28px; z-index: 999; width: 52px; height: 52px; border-radius: 50%; background: #25D366; color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; text-decoration: none; box-shadow: 0 8px 32px rgba(37,211,102,0.4); transition: var(--tr); }
         .wa:hover { transform: scale(1.1); background: #1da851; color: var(--white); }
 
+        /* ── QUALIFICATIONS CARDS ── */
+        .qual-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        @media(max-width:768px) { .qual-grid { grid-template-columns: 1fr; } }
+
+        .qual-card {
+            background: var(--white); border: 1px solid var(--grey-200);
+            border-radius: var(--radius-lg); padding: clamp(24px, 4vw, 40px);
+            display: flex; gap: 24px; transition: var(--tr);
+            position: relative; overflow: hidden;
+        }
+        .qual-card:hover { box-shadow: var(--shadow-lg); border-color: var(--blue-200); transform: translateY(-3px); }
+        .qual-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--blue-500); opacity: 0; transition: var(--tr); }
+        .qual-card:hover::before { opacity: 1; }
+
+        .qual-year { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--blue-500); line-height: 1; opacity: 0.8; flex-shrink: 0; }
+        .qual-content h4 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+        .qual-content h5 { font-size: 13px; font-weight: 600; color: var(--grey-500); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .qual-content p { font-size: 14px; line-height: 1.6; color: var(--grey-500); }
+
         /* ── REVEAL ── */
         .rev { opacity: 0; transform: translateY(26px); transition: opacity 0.65s var(--ease), transform 0.65s var(--ease); }
         .rev.in { opacity: 1; transform: translateY(0); }
@@ -268,10 +287,10 @@
         <ul class="nlinks">
             <li><a href="../index.html">Home</a></li>
             <li><a href="about.html" class="act">About</a></li>
+            <li><a href="courses.html">Courses</a></li>
             <li><a href="gallery.html">Visuals</a></li>
             <li><a href="videos.html">Showreel</a></li>
             <li><a href="blog.html">Blog</a></li>
-            <li><a href="reviews.html">Reviews</a></li>
         </ul>
         <div class="ncta-w"><a href="contact.html" class="ncta">Contact</a></div>
         <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -282,10 +301,10 @@
 <div class="drw" id="drw">
     <a href="../index.html">Home</a>
     <a href="about.html">About</a>
+    <a href="courses.html">Courses</a>
     <a href="gallery.html">Visuals</a>
     <a href="videos.html">Showreel</a>
     <a href="blog.html">Blog</a>
-    <a href="reviews.html">Reviews</a>
     <a href="contact.html" class="mcta">Contact</a>
 </div>
 
@@ -308,7 +327,7 @@
             <!-- LEFT: Photo + credential -->
             <div class="rev">
                 <div class="ifr">
-                    <img src="../images/profile.jpg"
+                    <img src="../images/profile2.jpg"
                          onerror="this.src='https://images.unsplash.com/photo-1560250056-07ba644d8ad3?auto=format&fit=crop&q=80&w=1000'"
                          alt="Dr. Krishnan Chandrasekharan"
                          style="aspect-ratio:4/5;object-fit:cover;">
@@ -438,6 +457,20 @@
     </div>
 </section>
 
+<!-- QUALIFICATIONS SECTION -->
+<section class="sec" style="background: var(--white); border-top: 1px solid var(--grey-100); padding-top: clamp(80px, 10vw, 136px); padding-bottom: 24px;">
+    <div class="wrap">
+        <div style="margin-bottom:52px;" class="rev">
+            <div class="eyebrow">Academic & Professional</div>
+            <div class="rule"></div>
+            <h2 class="hd">Client <em>Qualifications.</em></h2>
+        </div>
+        <div class="qual-grid" id="qual-grid">
+            <!-- Dynamic content injected via JS -->
+        </div>
+    </div>
+</section>
+
 <!-- BRAND POSITIONING -->
 <section class="sec" style="background: var(--white);">
     <div class="wrap">
@@ -538,6 +571,32 @@
         if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }
     }), { threshold: 0.12 });
     document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+    // QUALIFICATIONS DATA & RENDER
+    const qualifications = [
+        { degree: "Post Graduate Certificate in Management", institution: "IIM Calcutta", year: "2008", desc: "Specialized in Executive Management and Leadership." },
+        { degree: "Certified Executive Coach (MCC)", institution: "International Coaching Federation", year: "2015", desc: "Master Certified Coach specializing in human behavioral transformation." },
+        { degree: "NLP Master Practitioner", institution: "ANLP / Society of NLP", year: "2012", desc: "Advanced Neuro-Linguistic Programming for behavioral change." },
+        { degree: "Emotional Intelligence Architect", institution: "Six Seconds", year: "2014", desc: "Specializing in EQ diagnostics and capability building." }
+    ];
+
+    function renderQualifications() {
+        const grid = document.getElementById('qual-grid');
+        if (!grid) return;
+        grid.innerHTML = qualifications.map((q, i) => `
+            <div class="qual-card rev d${i % 3 + 1}">
+                <div class="qual-year">${q.year}</div>
+                <div class="qual-content">
+                    <h4>${q.degree}</h4>
+                    <h5>${q.institution}</h5>
+                    ${q.desc ? `<p>${q.desc}</p>` : ''}
+                </div>
+            </div>
+        `).join('');
+        // Re-observe injected elements
+        grid.querySelectorAll('.rev').forEach(el => ro.observe(el));
+    }
+    renderQualifications();
 </script>
 </body>
 </html>

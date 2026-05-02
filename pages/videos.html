@@ -237,10 +237,11 @@
 
         .vcard-thumb {
             position: relative; width: 100%; aspect-ratio: 16/9;
-            background: var(--ink); overflow: hidden;
+            background: #000; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
         }
         .vcard-thumb iframe, .vcard-thumb video {
-            position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; object-fit: cover;
+            width: 100%; height: 100%; border: none; display: block; object-fit: contain;
         }
         .vcard-body { padding: clamp(18px,2.5vw,28px); }
         .vtag {
@@ -309,10 +310,10 @@
         <ul class="nlinks">
             <li><a href="../index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
+            <li><a href="courses.html">Courses</a></li>
             <li><a href="gallery.html">Visuals</a></li>
             <li><a href="videos.html" class="act">Showreel</a></li>
             <li><a href="blog.html">Blog</a></li>
-            <li><a href="reviews.html">Reviews</a></li>
         </ul>
         <div class="ncta-w">
             <a href="contact.html" class="ncta">Contact</a>
@@ -327,10 +328,10 @@
 <div class="drw" id="drw">
     <a href="../index.html">Home</a>
     <a href="about.html">About</a>
+    <a href="courses.html">Courses</a>
     <a href="gallery.html">Visuals</a>
     <a href="videos.html">Showreel</a>
     <a href="blog.html">Blog</a>
-    <a href="reviews.html">Reviews</a>
     <a href="contact.html" class="mcta">Contact</a>
 </div>
 
@@ -347,29 +348,6 @@
     </div>
 </header>
 
-<!-- FEATURED VIDEO -->
-<section class="sec" style="background:var(--blue-800);">
-    <div class="wrap">
-        <div style="text-align:center;margin-bottom:48px;">
-            <div class="eyebrow light ctr rev">Featured Session</div>
-            <div class="rule light ctr rev" style="margin-top:14px;"></div>
-            <h2 class="hd w rev" style="margin-top:6px;">The Flagship <em>Masterclass.</em></h2>
-        </div>
-        <div class="fv-wrap rev d1">
-            <div class="fv-iframe-wrap">
-                <iframe src="https://www.youtube.com/embed/5MgBikgcWnY?rel=0" title="Leadership Transformation Masterclass" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="fv-meta">
-                <div>
-                    <div class="fv-tag">Global Masterclass</div>
-                    <h3 class="fv-title">Leadership Transformation Masterclass</h3>
-                    <p class="fv-desc">Developing the mindset required for next-generation organizational agility and executive presence. From behavioral awareness to irreversible action — this session redefines what it means to lead on a global stage.</p>
-                </div>
-                <div class="fv-badge"><i class="fas fa-star"></i> Featured</div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- MORE VIDEOS -->
 <section class="sec" style="background:var(--grey-50);">
