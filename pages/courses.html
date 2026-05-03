@@ -159,6 +159,23 @@
         .cm-textarea { resize: vertical; min-height: 90px; }
         .cm-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
         @media(max-width:480px) { .cm-btns { grid-template-columns: 1fr; } }
+
+        /* Social proof popup bottom-left */
+        .toast-popup {
+            position: fixed; bottom: 24px; left: 24px;
+            background: var(--white); border-radius: var(--radius-md);
+            padding: 16px 20px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15);
+            border: 1px solid var(--grey-100); z-index: 2000;
+            display: flex; align-items: center; gap: 14px; max-width: 380px;
+            transform: translateY(120px); opacity: 0; pointer-events: none;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        }
+        .toast-popup.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .toast-icon { width: 42px; height: 42px; border-radius: 50%; background: var(--blue-50); color: var(--blue-500); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .toast-text { font-size: 13px; color: var(--grey-700); line-height: 1.5; }
+        .toast-text strong { color: var(--ink); font-weight: 600; }
+        .toast-close { background: none; border: none; font-size: 14px; color: var(--grey-500); cursor: pointer; margin-left: auto; flex-shrink: 0; transition: color 0.2s ease; }
+        .toast-close:hover { color: var(--ink); }
     </style>
 </head>
 <body>
@@ -428,6 +445,13 @@
     </div>
 </div>
 
+<!-- SOCIAL PROOF POPUP TOAST (bottom-left) -->
+<div class="toast-popup" id="toastPopup">
+    <div class="toast-icon"><i class="fas fa-user-check"></i></div>
+    <div class="toast-text" id="toastText">Someone from Mumbai just enquired about the <strong>Leadership</strong> program.</div>
+    <button class="toast-close" onclick="closeToast()"><i class="fas fa-times"></i></button>
+</div>
+
 <script>
     const courses = [
         { id: "sig1", title: "Voice Mastery (1-Day Intensive)", category: "signature", duration: "1 Day", price: "₹25,000", amount: 2500000, desc: "Immediate authority and presence training.", img: "../images/course_voice.png", stripe_url: "https://buy.stripe.com/test_sig1" },
@@ -541,6 +565,41 @@
     }
 
     renderCourses();
+
+    // SOCIAL PROOF TOAST
+    const cities = ["Mumbai", "Bengaluru", "New Delhi", "Hyderabad", "Singapore", "Dubai", "London", "New York"];
+    const popupCourses = [
+        "Voice Mastery (1-Day Intensive)",
+        "Campus-to-Corporate Bootcamp",
+        "Executive Leadership Mastery",
+        "Public Speaking for Strategists",
+        "Emotional Intelligence Architect"
+    ];
+
+    function showToast() {
+        const city = cities[Math.floor(Math.random() * cities.length)];
+        const course = popupCourses[Math.floor(Math.random() * popupCourses.length)];
+        const textEl = document.getElementById('toastText');
+        if (textEl) {
+            textEl.innerHTML = `Someone from <strong>${city}</strong> just enquired about the <strong>${course}</strong> program.`;
+        }
+        const popup = document.getElementById('toastPopup');
+        if (popup) {
+            popup.classList.add('active');
+            setTimeout(() => { popup.classList.remove('active'); }, 5000);
+        }
+    }
+
+    function closeToast() {
+        const popup = document.getElementById('toastPopup');
+        if (popup) popup.classList.remove('active');
+    }
+
+    // Trigger toast initially after 4 seconds, then every 15 seconds
+    setTimeout(() => {
+        showToast();
+        setInterval(showToast, 15000);
+    }, 4000);
 
     // Reveal Logic
     const ro = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){e.target.classList.add('in');} }), {threshold:0.1});
