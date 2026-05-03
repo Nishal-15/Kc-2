@@ -384,7 +384,7 @@
                         <span class="c-cat">${c.category}</span>
                         <h3>${c.title}</h3>
                         <p>${c.desc}</p>
-                        <button class="btn btn-blue" onclick="payNow('${c.id}')" style="width:100%; justify-content:center;">Enroll Now <i class="fas fa-arrow-right"></i></button>
+                        <button class="btn btn-blue" onclick="inquireNow('${c.id}')" style="width:100%; justify-content:center;">Enquire Now <i class="fas fa-arrow-right"></i></button>
                     </div>
                     <div class="c-meta">
                         <span class="c-dur"><i class="far fa-clock"></i> ${c.duration}</span>
@@ -418,21 +418,15 @@
         drw.classList.remove('op');
     }));
 
-    // STRIPE PAYMENT INTEGRATION
-    function payNow(courseId) {
-        console.log("Initiating payment for course via Stripe:", courseId);
+    // INQUIRY REDIRECTION
+    function inquireNow(courseId) {
+        console.log("Initiating inquiry for course:", courseId);
         const course = courses.find(c => c.id === courseId);
         if (!course) {
             console.error("Course not found:", courseId);
             return;
         }
-
-        if (course.stripe_url) {
-            // Securely open the Stripe Checkout Payment Link
-            window.open(course.stripe_url, '_blank');
-        } else {
-            alert("Stripe Checkout Link is not configured for this course yet.");
-        }
+        window.location.href = `contact.html?course=${encodeURIComponent(course.title)}`;
     }
 
     renderCourses();
