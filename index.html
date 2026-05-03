@@ -341,25 +341,111 @@
         .lwimg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,22,40,0.55), transparent 55%); }
 
         /* CASE STUDIES */
-        .clist { display: flex; flex-direction: column; gap: 28px; }
-        .citem { background: var(--white); border: 1px solid var(--grey-200); border-radius: var(--radius-lg); padding: 32px 36px; transition: var(--tr); display: grid; grid-template-columns: 280px 1fr 280px; gap: 32px; align-items: center; }
-        .citem:hover { box-shadow: var(--shadow-lg); border-color: var(--blue-200); }
-        .chead-v2 { border-right: 1px solid var(--grey-100); padding-right: 24px; }
-        .chead-v2 h4 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
-        .chead-v2 p { font-size: 13px; color: var(--grey-500); line-height: 1.5; }
-        .cmetrics { display: flex; align-items: center; justify-content: space-around; gap: 28px; border-right: 1px solid var(--grey-100); padding: 0 16px; }
-        .cm { text-align: center; display: flex; flex-direction: column; align-items: center; }
-        .cm-label { font-size: 11px; color: var(--grey-500); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-        .cm-value { font-size: 1.8rem; font-weight: 700; color: var(--ink); font-family: var(--font-display); line-height: 1.1; }
-        .cm-value.hi { color: var(--blue-600); }
-        .cm > div:last-child { font-size: 12px; color: var(--grey-500); margin-top: 4px; }
-        .carrow { font-size: 1.8rem; color: var(--blue-400); flex-shrink: 0; }
-        .cresult { text-align: center; background: linear-gradient(135deg, var(--blue-50) 0%, rgba(59,130,246,0.08) 100%); border-radius: var(--radius-md); border: 1px solid var(--blue-100); padding: 20px; }
-        .cresult-num { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--blue-600); line-height: 1; margin-bottom: 6px; }
-        .cresult-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-600); }
-        .cresult-detail { font-size: 12px; color: var(--grey-500); margin-top: 10px; line-height: 1.5; }
-        @media(max-width:1200px) { .citem { grid-template-columns: 1fr; gap: 24px; padding: 24px; } .chead-v2 { border-right: none; border-bottom: 1px solid var(--grey-100); padding-right: 0; padding-bottom: 16px; } .cmetrics { border-right: none; border-bottom: 1px solid var(--grey-100); padding: 0 0 16px; justify-content: center; } }
-        @media(max-width:640px) { .cmetrics { flex-wrap: wrap; gap: 16px; } .carrow { font-size: 1.4rem; } }
+        .clist { display: flex; flex-direction: column; gap: 36px; }
+        .cs-card {
+            background: var(--white); border: 1px solid var(--grey-200); border-radius: var(--radius-lg);
+            padding: clamp(24px, 4vw, 48px); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 32px;
+            transition: var(--tr);
+        }
+        .cs-card:hover { box-shadow: var(--shadow-lg); border-color: var(--blue-200); }
+        .cs-top {
+            display: grid; grid-template-columns: 280px 1fr 280px; gap: 32px; align-items: center;
+        }
+        .cs-left {
+            display: flex; flex-direction: column; align-items: flex-start;
+        }
+        .cs-left-icon {
+            width: 56px; height: 56px; border-radius: 50%; background: #eff6ff;
+            color: #1d4ed8; display: flex; align-items: center; justify-content: center; font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .cs-title {
+            font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--ink); line-height: 1.25; margin: 0;
+        }
+        .cs-line {
+            width: 44px; height: 2px; background: #3b82f6; margin: 14px 0;
+        }
+        .cs-sub {
+            font-size: 13px; color: var(--grey-500); line-height: 1.5; margin: 0;
+        }
+        .cs-compare {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 24px; border-left: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; padding: 0 24px; min-height: 180px;
+        }
+        .cs-compare-header {
+            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+            color: #1d4ed8; background: #eff6ff; padding: 6px 16px; border-radius: 99px; text-align: center;
+        }
+        .cs-compare-body {
+            display: flex; align-items: center; justify-content: center; gap: 28px; width: 100%;
+        }
+        .cs-metric-box {
+            text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .cs-metric-label {
+            font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--grey-500);
+        }
+        .cs-metric-value {
+            font-size: 3rem; font-weight: 700; font-family: var(--font-display); color: #0a1628; line-height: 1;
+        }
+        .cs-metric-value.after { color: #1d4ed8; }
+        .cs-metric-user {
+            display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--grey-400); margin-top: 4px;
+        }
+        .cs-arrow {
+            font-size: 2.2rem; color: #3b82f6; opacity: 0.85; flex-shrink: 0;
+        }
+        .cs-highlight {
+            background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 12px;
+            padding: 32px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .cs-highlight.blue {
+            background: #eff6ff; border-color: #dbeafe;
+        }
+        .cs-hi-icon {
+            width: 44px; height: 44px; border-radius: 50%; background: #dcfce7;
+            color: #15803d; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 4px;
+        }
+        .cs-highlight.blue .cs-hi-icon {
+            background: #dbeafe; color: #1d4ed8;
+        }
+        .cs-hi-val {
+            font-size: 2.6rem; font-weight: 700; color: #15803d; font-family: var(--font-display); line-height: 1; margin: 0;
+        }
+        .cs-highlight.blue .cs-hi-val {
+            color: #1d4ed8;
+        }
+        .cs-hi-title {
+            font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); margin: 0; line-height: 1.35;
+        }
+        .cs-hi-sep {
+            width: 24px; height: 2px; background: #22c55e; margin: 2px 0;
+        }
+        .cs-highlight.blue .cs-hi-sep {
+            background: #3b82f6;
+        }
+        .cs-hi-sub {
+            font-size: 12px; color: var(--grey-500); line-height: 1.45; margin: 0;
+        }
+        .cs-bottom {
+            display: flex; align-items: center; gap: 16px; border: 1px solid #e2e8f0;
+            background: #f8fafc; border-radius: 99px; padding: 14px 28px; width: 100%; border-color: rgba(59,130,246,0.18);
+        }
+        .cs-bot-icon {
+            font-size: 20px; color: #1d4ed8; flex-shrink: 0;
+        }
+        .cs-bot-text {
+            font-size: 13px; color: var(--grey-600); line-height: 1.4; margin: 0;
+        }
+        .cs-bot-text strong {
+            color: #1d4ed8; font-weight: 700;
+        }
+
+        @media(max-width:1200px) {
+            .cs-top { grid-template-columns: 1fr; gap: 28px; }
+            .cs-compare { border-left: none; border-right: none; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 24px 0; min-height: auto; }
+            .cs-bottom { border-radius: 16px; flex-direction: row; align-items: flex-start; padding: 16px 20px; }
+        }
 
         /* TESTIMONIALS */
         .tgrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
@@ -658,78 +744,120 @@
             <h2 class="hd rev">Case Studies &<br><em>Transformation Metrics.</em></h2>
         </div>
         <div class="clist">
-            <div class="citem rev">
-                <div class="chead-v2">
-                    <h4>Leadership Pipeline</h4>
-                    <p>Fortune 500 Tech Company</p>
-                </div>
-                <div class="cmetrics">
-                    <div class="cm">
-                        <div class="cm-label">Before</div>
-                        <div class="cm-value">35%</div>
-                        <div style="font-size:11px;color:var(--grey-500);margin-top:4px;">readiness</div>
+            <!-- Leadership Pipeline -->
+            <div class="cs-card rev">
+                <div class="cs-top">
+                    <div class="cs-left">
+                        <div class="cs-left-icon"><i class="fas fa-users"></i></div>
+                        <h4 class="cs-title">Leadership<br>Pipeline</h4>
+                        <div class="cs-line"></div>
+                        <p class="cs-sub">Fortune 500 Tech Company</p>
                     </div>
-                    <div class="carrow">→</div>
-                    <div class="cm">
-                        <div class="cm-label">After</div>
-                        <div class="cm-value hi">82%</div>
-                        <div style="font-size:11px;color:var(--grey-500);margin-top:4px;">readiness</div>
+                    <div class="cs-compare">
+                        <div class="cs-compare-header">Leadership Readiness Improvement</div>
+                        <div class="cs-compare-body">
+                            <div class="cs-metric-box">
+                                <span class="cs-metric-label">Before</span>
+                                <span class="cs-metric-value">35%</span>
+                                <span class="cs-metric-user"><i class="fas fa-user"></i> Readiness Score</span>
+                            </div>
+                            <div class="cs-arrow">➔</div>
+                            <div class="cs-metric-box">
+                                <span class="cs-metric-label">After</span>
+                                <span class="cs-metric-value after">82%</span>
+                                <span class="cs-metric-user"><i class="fas fa-user"></i> Readiness Score</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cs-highlight blue">
+                        <div class="cs-hi-icon"><i class="fas fa-bolt"></i></div>
+                        <h3 class="cs-hi-val">+2.3X</h3>
+                        <h5 class="cs-hi-title">Improvement Rate</h5>
+                        <div class="cs-hi-sep"></div>
+                        <p class="cs-hi-sub">6-Month Intervention Across 120+ Managers</p>
                     </div>
                 </div>
-                <div class="cresult">
-                    <div class="cresult-num">+2.3X</div>
-                    <div class="cresult-label">Improvement Rate</div>
-                    <div class="cresult-detail">6-month intervention across 120+ senior managers</div>
+                <div class="cs-bottom">
+                    <div class="cs-bot-icon"><i class="fas fa-bullseye"></i></div>
+                    <p class="cs-bot-text">Accelerating management capability and succession readiness. <strong>Higher Impact. Faster Delivery. Lasting Culture.</strong></p>
                 </div>
             </div>
 
-            <div class="citem rev d1">
-                <div class="chead-v2">
-                    <h4>Communication Transformation</h4>
-                    <p>Global Financial Services Firm</p>
-                </div>
-                <div class="cmetrics">
-                    <div class="cm">
-                        <div class="cm-label">Before</div>
-                        <div class="cm-value">28</div>
-                        <div style="font-size:11px;color:var(--grey-500);margin-top:4px;">pts EQ</div>
+            <!-- Communication Transformation -->
+            <div class="cs-card rev d1">
+                <div class="cs-top">
+                    <div class="cs-left">
+                        <div class="cs-left-icon"><i class="fas fa-comments"></i></div>
+                        <h4 class="cs-title">Communication<br>Transformation</h4>
+                        <div class="cs-line"></div>
+                        <p class="cs-sub">Global Financial Services Firm</p>
                     </div>
-                    <div class="carrow">→</div>
-                    <div class="cm">
-                        <div class="cm-label">After</div>
-                        <div class="cm-value hi">73</div>
-                        <div style="font-size:11px;color:var(--grey-500);margin-top:4px;">pts EQ</div>
+                    <div class="cs-compare">
+                        <div class="cs-compare-header">Emotional Intelligence Enhancement</div>
+                        <div class="cs-compare-body">
+                            <div class="cs-metric-box">
+                                <span class="cs-metric-label">Before</span>
+                                <span class="cs-metric-value">28</span>
+                                <span class="cs-metric-user"><i class="fas fa-user"></i> PTS EQ</span>
+                            </div>
+                            <div class="cs-arrow">➔</div>
+                            <div class="cs-metric-box">
+                                <span class="cs-metric-label">After</span>
+                                <span class="cs-metric-value after">73</span>
+                                <span class="cs-metric-user"><i class="fas fa-user"></i> PTS EQ</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cs-highlight">
+                        <div class="cs-hi-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="cs-hi-val">+160%</h3>
+                        <h5 class="cs-hi-title">Emotional Lift</h5>
+                        <div class="cs-hi-sep"></div>
+                        <p class="cs-hi-sub">Workshops across 250+ professionals</p>
                     </div>
                 </div>
-                <div class="cresult">
-                    <div class="cresult-num">+160%</div>
-                    <div class="cresult-label">Emotional Intelligence Lift</div>
-                    <div class="cresult-detail">Interactive workshops across 250+ professionals</div>
+                <div class="cs-bottom">
+                    <div class="cs-bot-icon"><i class="fas fa-bullseye"></i></div>
+                    <p class="cs-bot-text">Instilling strategic soft skills and empathy. <strong>Stronger Collaboration. Clear Messaging. Direct Solutions.</strong></p>
                 </div>
             </div>
 
-            <div class="citem rev d2">
-                <div class="chead-v2">
-                    <h4>Campus to Corporate</h4>
-                    <p>Top-Tier Engineering Institute</p>
-                </div>
-                <div class="cmetrics">
-                    <div class="cm">
-                        <div class="cm-label">Before</div>
-                        <div class="cm-value">42%</div>
-                        <div style="font-size:11px;color:var(--grey-500);margin-top:4px;">placement</div>
+            <!-- Campus to Corporate -->
+            <div class="cs-card rev d2">
+                <div class="cs-top">
+                    <div class="cs-left">
+                        <div class="cs-left-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h4 class="cs-title">Campus to<br>Corporate</h4>
+                        <div class="cs-line"></div>
+                        <p class="cs-sub">Top-Tier Engineering Institute</p>
                     </div>
-                    <div class="carrow">→</div>
-                    <div class="cm">
-                        <div class="cm-label">After</div>
-                        <div class="cm-value hi">89%</div>
-                        <div style="font-size:11px;color:var(--grey-500);margin-top:4px;">placement</div>
+                    <div class="cs-compare">
+                        <div class="cs-compare-header">Placement Rate Improvement</div>
+                        <div class="cs-compare-body">
+                            <div class="cs-metric-box">
+                                <span class="cs-metric-label">Before</span>
+                                <span class="cs-metric-value">42%</span>
+                                <span class="cs-metric-user"><i class="fas fa-user"></i> Placement Rate</span>
+                            </div>
+                            <div class="cs-arrow">➔</div>
+                            <div class="cs-metric-box">
+                                <span class="cs-metric-label">After</span>
+                                <span class="cs-metric-value after">89%</span>
+                                <span class="cs-metric-user"><i class="fas fa-user"></i> Placement Rate</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cs-highlight">
+                        <div class="cs-hi-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="cs-hi-val">+3X</h3>
+                        <h5 class="cs-hi-title">Productivity Increase</h5>
+                        <div class="cs-hi-sep"></div>
+                        <p class="cs-hi-sub">Soft Skills & Behavioral Ownership Program</p>
                     </div>
                 </div>
-                <div class="cresult">
-                    <div class="cresult-num">+3X</div>
-                    <div class="cresult-label">Productivity Increase</div>
-                    <div class="cresult-detail">Soft skills & behavioral ownership program</div>
+                <div class="cs-bottom">
+                    <div class="cs-bot-icon"><i class="fas fa-bullseye"></i></div>
+                    <p class="cs-bot-text">Empowering students with industry-ready skills. <strong>Stronger Placements. Higher Productivity. Better Futures.</strong></p>
                 </div>
             </div>
         </div>
