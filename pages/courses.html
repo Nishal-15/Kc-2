@@ -124,6 +124,39 @@
         /* REVEAL */
         .rev { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
         .rev.in { opacity: 1; transform: translateY(0); }
+
+        /* COURSE ENQUIRY MODAL */
+        .cmodal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(8px);
+            z-index: 1000; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .cmodal-overlay.open { display: flex; opacity: 1; }
+        .cmodal {
+            background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 540px;
+            box-shadow: 0 24px 64px -12px rgba(15, 23, 42, 0.25); border: 1px solid var(--grey-100);
+            overflow: hidden; transform: scale(0.95); transition: transform 0.3s ease; margin: 16px;
+        }
+        .cmodal-overlay.open .cmodal { transform: scale(1); }
+        .cm-head {
+            padding: 24px 32px; background: var(--grey-50); border-bottom: 1px solid var(--grey-100);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cm-head h4 { font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); margin: 0; }
+        .cm-close { background: none; border: none; font-size: 20px; color: var(--grey-500); cursor: pointer; transition: color 0.2s ease; padding: 4px; }
+        .cm-close:hover { color: var(--ink); }
+        .cm-body { padding: 32px; }
+        .cm-form-group { margin-bottom: 18px; }
+        .cm-form-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--grey-500); margin-bottom: 8px; }
+        .cm-input {
+            width: 100%; padding: 12px 16px; border: 1.5px solid var(--grey-200); border-radius: var(--radius-md);
+            font-size: 14px; color: var(--ink); transition: border-color 0.2s ease; font-family: inherit;
+        }
+        .cm-input:focus { outline: none; border-color: var(--blue-500); background: var(--white); }
+        .cm-textarea { resize: vertical; min-height: 90px; }
+        .cm-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+        @media(max-width:480px) { .cm-btns { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -358,6 +391,42 @@
             <i class="fas fa-arrow-left"></i> Back to Portfolio Home
         </a>
     </div>
+<!-- COURSE ENQUIRY MODAL -->
+<div class="cmodal-overlay" id="enquiryModal">
+    <div class="cmodal">
+        <div class="cm-head">
+            <h4 id="cmCourseTitle">Course Enquiry</h4>
+            <button class="cm-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cm-body">
+            <form id="courseInquiryForm" onsubmit="event.preventDefault();">
+                <div class="cm-form-group">
+                    <label>Full Name <span>*</span></label>
+                    <input type="text" class="cm-input" id="cmName" placeholder="Your Name" required>
+                </div>
+                <div class="cm-form-group">
+                    <label>Email Address <span>*</span></label>
+                    <input type="email" class="cm-input" id="cmEmail" placeholder="you@company.com" required>
+                </div>
+                <div class="cm-form-group">
+                    <label>Phone Number <span>*</span></label>
+                    <input type="tel" class="cm-input" id="cmPhone" placeholder="+91 XXXXX XXXXX" required>
+                </div>
+                <div class="cm-form-group">
+                    <label>Your Message <span>*</span></label>
+                    <textarea class="cm-input cm-textarea" id="cmMessage" required></textarea>
+                </div>
+                <div class="cm-btns">
+                    <button type="button" class="btn btn-wa" onclick="submitToWA()" style="justify-content:center; padding:12px 16px; font-size:14px; background:#25d366;">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
+                    <button type="button" class="btn btn-blue" onclick="submitToEmail()" style="justify-content:center; padding:12px 16px; font-size:14px;">
+                        <i class="fas fa-envelope"></i> Email
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -418,7 +487,9 @@
         drw.classList.remove('op');
     }));
 
-    // INQUIRY REDIRECTION
+    let selectedCourseTitle = "";
+
+    // Open/Close modal
     function inquireNow(courseId) {
         console.log("Initiating inquiry for course:", courseId);
         const course = courses.find(c => c.id === courseId);
@@ -426,7 +497,48 @@
             console.error("Course not found:", courseId);
             return;
         }
-        window.location.href = `contact.html?course=${encodeURIComponent(course.title)}`;
+
+        selectedCourseTitle = course.title;
+        document.getElementById('cmCourseTitle').innerText = "Enquire about " + course.title;
+        document.getElementById('cmMessage').value = `Hello, I'm interested in the "${course.title}" course. Please share details and the payment link.`;
+
+        const modal = document.getElementById('enquiryModal');
+        modal.classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('enquiryModal').classList.remove('open');
+    }
+
+    // Submit handlers
+    function submitToWA() {
+        const form = document.getElementById('courseInquiryForm');
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+
+        const name = document.getElementById('cmName').value;
+        const email = document.getElementById('cmEmail').value;
+        const phone = document.getElementById('cmPhone').value;
+        const msg = document.getElementById('cmMessage').value;
+
+        const text = `Hello Dr. Krishnan,\n\n*Name:* ${name}\n*Email:* ${email}\n*Phone:* ${phone}\n*Inquiry:* Course Interest\n*Course:* ${selectedCourseTitle}\n\n*Message:*\n${msg}`;
+        window.open(`https://wa.me/916300405352?text=${encodeURIComponent(text)}`, '_blank');
+        closeModal();
+    }
+
+    function submitToEmail() {
+        const form = document.getElementById('courseInquiryForm');
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+
+        const name = document.getElementById('cmName').value;
+        const email = document.getElementById('cmEmail').value;
+        const phone = document.getElementById('cmPhone').value;
+        const msg = document.getElementById('cmMessage').value;
+
+        const subject = `Course Enquiry: ${selectedCourseTitle} — ${name}`;
+        const body = `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCourse: ${selectedCourseTitle}\n\nMessage:\n${msg}`;
+
+        window.location.href = `mailto:connect@learningwithoutwalls.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        closeModal();
     }
 
     renderCourses();

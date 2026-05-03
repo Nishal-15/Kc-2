@@ -595,18 +595,6 @@
         document.getElementById('contactForm').style.display = 'none';
         document.getElementById('formSuccess').style.display = 'block';
     });
-
-    // Auto-fill Course Name from URL query parameter
-    window.addEventListener('DOMContentLoaded', () => {
-        const params = new URLSearchParams(window.location.search);
-        const course = params.get('course');
-        if (course) {
-            const messageEl = document.getElementById('message');
-            if (messageEl) {
-                messageEl.value = `Hello, I'm interested in enrolling in the "${course}" course. Please share more details and the payment link.`;
-            }
-        }
-    });
 </script>
 </body>
 </html>
