@@ -460,8 +460,28 @@
         .bg-g { background: var(--grey-50); }
         .bg-b50 { background: var(--blue-50); }
         .bg-b900 { background: var(--blue-900); }
-        .bg-b800 { background: var(--blue-800); }
-        .bg-b700 { background: var(--blue-700); }
+        /* NEW COURSE TOAST POPUP - bottom left */
+        .promo-toast {
+            position: fixed; bottom: 32px; left: 32px;
+            background: var(--white); border-radius: var(--radius-lg);
+            padding: 28px 32px; box-shadow: 0 16px 48px -12px rgba(15, 23, 42, 0.18);
+            border-left: 6px solid var(--blue-600); border-top: 1px solid var(--grey-100); border-bottom: 1px solid var(--grey-100); border-right: 1px solid var(--grey-100);
+            z-index: 2500; max-width: 420px; display: flex; flex-direction: column; gap: 14px;
+            transform: translateY(150px); opacity: 0; pointer-events: none;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+        }
+        .promo-toast.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .promo-head { display: flex; justify-content: space-between; align-items: center; }
+        .promo-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--ink); margin: 0; display: flex; align-items: center; gap: 8px; }
+        .promo-desc { font-size: 14px; line-height: 1.55; color: var(--grey-600); margin: 0; }
+        .promo-btn {
+            align-self: flex-start; background: var(--blue-600); color: var(--white); border: none;
+            border-radius: 99px; padding: 12px 28px; font-size: 14px; font-weight: 600; cursor: pointer;
+            transition: var(--tr); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; margin-top: 4px;
+        }
+        .promo-btn:hover { background: var(--blue-500); transform: translateY(-2px); }
+        .promo-close { background: none; border: none; font-size: 18px; color: var(--grey-300); cursor: pointer; transition: color 0.2s; padding: 4px; }
+        .promo-close:hover { color: var(--grey-600); }
     </style>
 </head>
 
@@ -1014,13 +1034,34 @@
   })();
 </script>
 
+<!-- NEW COURSE PROMO POPUP TOAST -->
+<div class="promo-toast" id="promoToast">
+    <div class="promo-head">
+        <h4 class="promo-title">🎉 New Course Available!</h4>
+        <button class="promo-close" onclick="closePromo()"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="promo-desc">Empower your leadership journey with our latest "Executive Behavioral Mastery" program. Limited seats available!</p>
+    <a href="pages/courses.html" class="promo-btn">View Courses</a>
+</div>
+
 <a href="https://wa.me/916300405352" class="wa" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
 <script>
     // INITIALIZE
     window.addEventListener('load', () => { 
         initParticles();
+        
+        // Show promo toast after 3 seconds
+        setTimeout(() => {
+            const promo = document.getElementById('promoToast');
+            if (promo) promo.classList.add('active');
+        }, 3000);
     });
+
+    function closePromo() {
+        const promo = document.getElementById('promoToast');
+        if (promo) promo.classList.remove('active');
+    }
 
     // PARTICLES GENERATOR
     function initParticles() {
